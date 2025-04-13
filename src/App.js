@@ -193,22 +193,9 @@ function App() {
 
           {predictions.length > 0 && (
             <div className="predictions-section">
-              <h2>Predictions</h2>
-              <div className="predictions-list">
-                {predictions.map((prediction) => (
-                  <div className="prediction-item" key={prediction.label}>
-                    <span className="label">{prediction.label}</span>
-                    <div className="confidence-bar">
-                      <div 
-                        className="confidence-fill"
-                        style={{ width: `${(prediction.score * 100).toFixed(1)}%` }}
-                      />
-                    </div>
-                    <span className="percentage">
-                      {(prediction.score * 100).toFixed(1)}%
-                    </span>
-                  </div>
-                ))}
+              <div className="top-prediction">
+                <h3>{predictions[0].label}</h3>
+                <h4>{(predictions[0].score * 100).toFixed(1)}%</h4>
               </div>
             </div>
           )}
