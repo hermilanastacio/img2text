@@ -177,15 +177,18 @@ function App() {
         <div className="content-section">
           {selectedImage && (
             <div className="image-preview">
-              <img src={selectedImage} alt="Selected" />
-              <button 
-                className="classify-btn"
-                onClick={classifyImage}
-                disabled={isLoading}
-              >
-                {isLoading ? 'Classifying...' : 'Classify Image'}
-              </button>
+              <img src={selectedImage} alt="Preview" />
             </div>
+          )}
+
+          {selectedImage && (
+            <button 
+              className="classify-btn"
+              onClick={classifyImage}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Classifying...' : 'Classify Image'}
+            </button>
           )}
 
           {predictions.length > 0 && (
