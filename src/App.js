@@ -6,6 +6,7 @@ function App() {
   const [predictions, setPredictions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [useCamera, setUseCamera] = useState(false);
+  const [facingMode, setFacingMode] = useState('user'); // 'user' for front camera, 'environment' for back camera
   const fileInputRef = useRef(null);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
@@ -24,7 +25,15 @@ function App() {
 
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (streamRef.current) {
+        stopCamera();
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          facingMode: facingMode 
+        } 
+      });
       videoRef.current.srcObject = stream;
       streamRef.current = stream;
     } catch (error) {
@@ -53,6 +62,11 @@ function App() {
       stopCamera();
       setUseCamera(false);
     }
+  };
+
+  const switchCamera = async () => {
+    setFacingMode(prevMode => prevMode === 'user' ? 'environment' : 'user');
+    await startCamera();
   };
 
   const toggleInput = (useCamera) => {
@@ -140,12 +154,20 @@ function App() {
                 playsInline
                 style={{ maxWidth: '100%', display: selectedImage ? 'none' : 'block' }}
               />
-              <button 
-                className="capture-btn"
-                onClick={capturePhoto}
-              >
-                Take Photo
-              </button>
+              <div className="camera-controls">
+                <button 
+                  className="switch-camera-btn"
+                  onClick={switchCamera}
+                >
+                  Switch Camera
+                </button>
+                <button 
+                  className="capture-btn"
+                  onClick={capturePhoto}
+                >
+                  Take Photo
+                </button>
+              </div>
             </div>
           )}
         </div>
