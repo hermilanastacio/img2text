@@ -169,23 +169,30 @@ h1 {
 .input-toggle {
   margin-bottom: 20px;
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  background: #e2e8f0;
+  padding: 4px;
+  border-radius: 30px;
+  width: fit-content;
+  margin: 0 auto 20px;
 }
 
 .toggle-btn {
-  padding: 10px 20px;
-  border: 2px solid #007bff;
+  padding: 8px 24px;
+  border: none;
   background: transparent;
-  color: #007bff;
-  border-radius: 5px;
+  color: #4a5568;
   cursor: pointer;
   transition: all 0.3s ease;
+  border-radius: 25px;
+  font-weight: 500;
+  position: relative;
+  white-space: nowrap;
 }
 
 .toggle-btn.active {
-  background: #007bff;
-  color: white;
+  background: white;
+  color: #4a5568;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .camera-container {

@@ -80,7 +80,7 @@ function App() {
         "https://router.huggingface.co/hf-inference/models/google/mobilenet_v2_1.0_224",
         {
           headers: {
-            Authorization: "Bearer <YOUR_TOKEN_HERE>",
+            Authorization: `Bearer ${process.env.REACT_APP_HUGGINGFACE_API_KEY}`,
             "Content-Type": "image/jpeg"
           },
           method: "POST",
@@ -105,13 +105,13 @@ function App() {
             className={`toggle-btn ${!useCamera ? 'active' : ''}`}
             onClick={() => toggleInput(false)}
           >
-            Upload Image
+            Upload
           </button>
           <button 
             className={`toggle-btn ${useCamera ? 'active' : ''}`}
             onClick={() => toggleInput(true)}
           >
-            Use Camera
+            Camera
           </button>
         </div>
 
