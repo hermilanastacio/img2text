@@ -65,8 +65,23 @@ function App() {
   };
 
   const switchCamera = async () => {
-    setFacingMode(prevMode => prevMode === 'user' ? 'environment' : 'user');
-    await startCamera();
+    const newFacingMode = facingMode === 'user' ? 'environment' : 'user';
+    setFacingMode(newFacingMode);
+    try {
+      if (streamRef.current) {
+        stopCamera();
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          facingMode: newFacingMode 
+        } 
+      });
+      videoRef.current.srcObject = stream;
+      streamRef.current = stream;
+    } catch (error) {
+      console.error("Error switching camera:", error);
+    }
   };
 
   const toggleInput = (useCamera) => {
