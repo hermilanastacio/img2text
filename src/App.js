@@ -113,7 +113,6 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <h1>WebClassify</h1>
         <div className="input-toggle">
           <button 
             className={`toggle-btn ${!useCamera ? 'active' : ''}`}
@@ -153,13 +152,16 @@ function App() {
                 autoPlay
                 playsInline
                 style={{ maxWidth: '100%', display: selectedImage ? 'none' : 'block' }}
-              />
+              >
+                <track kind="captions" />
+              </video>
               <div className="camera-controls">
                 <button 
                   className="switch-camera-btn"
                   onClick={switchCamera}
+                  aria-label="Switch Camera"
                 >
-                  Switch Camera
+                  <div className="switch-camera-icon"></div>
                 </button>
                 <button 
                   className="capture-btn"
@@ -190,8 +192,8 @@ function App() {
             <div className="predictions-section">
               <h2>Predictions</h2>
               <div className="predictions-list">
-                {predictions.map((prediction, index) => (
-                  <div className="prediction-item" key={index}>
+                {predictions.map((prediction) => (
+                  <div className="prediction-item" key={prediction.label}>
                     <span className="label">{prediction.label}</span>
                     <div className="confidence-bar">
                       <div 
