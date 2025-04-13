@@ -86,7 +86,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 15px;
   width: 100%;
 }
 
@@ -96,8 +96,23 @@ h1 {
   height: auto;
   max-height: 400px;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.retake-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+.retake-btn:hover {
+  background-color: #c82333;
 }
 
 .classify-btn {

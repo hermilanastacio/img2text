@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -34,12 +34,25 @@ function App() {
           facingMode: facingMode 
         } 
       });
-      videoRef.current.srcObject = stream;
-      streamRef.current = stream;
+
+      // Add check for videoRef.current
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        streamRef.current = stream;
+      } else {
+        // If video element isn't ready, stop the stream
+        stream.getTracks().forEach(track => track.stop());
+      }
     } catch (error) {
       console.error("Error accessing camera:", error);
     }
   };
+
+  useEffect(() => {
+    if (useCamera && !selectedImage && videoRef.current) {
+      startCamera();
+    }
+  }, [useCamera, selectedImage]);
 
   const stopCamera = () => {
     if (streamRef.current) {
@@ -59,8 +72,7 @@ function App() {
       const imageDataUrl = canvas.toDataURL('image/jpeg');
       setSelectedImage(imageDataUrl);
       setPredictions([]);
-      stopCamera();
-      setUseCamera(false);
+      // Don't stop camera or set useCamera to false
     }
   };
 
@@ -162,48 +174,79 @@ function App() {
             </>
           ) : (
             <div className="camera-container">
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                style={{ maxWidth: '100%', display: selectedImage ? 'none' : 'block' }}
-              >
-                <track kind="captions" />
-              </video>
-              <div className="camera-controls">
-                <button 
-                  className="switch-camera-btn"
-                  onClick={switchCamera}
-                  aria-label="Switch Camera"
-                >
-                  <img src={require("./camera.png")} alt="Switch camera" />
-                </button>
-              </div>
-              <button 
-                className="capture-btn"
-                onClick={capturePhoto}
-              >
-                Take Photo
-              </button>
+              {!selectedImage ? (
+                <>
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    style={{ maxWidth: '100%', display: 'block' }}
+                  >
+                    <track kind="captions" />
+                  </video>
+                  <div className="camera-controls">
+                    <button 
+                      className="switch-camera-btn"
+                      onClick={switchCamera}
+                      aria-label="Switch Camera"
+                    >
+                      <img src={require("./camera.png")} alt="Switch camera" />
+                    </button>
+                  </div>
+                  <button 
+                    className="capture-btn"
+                    onClick={capturePhoto}
+                  >
+                    Take Photo
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="image-preview">
+                    <img src={selectedImage} alt="Preview" />
+                  </div>
+                  <div className="camera-controls">
+                    <button 
+                      className="retake-btn"
+                      onClick={() => {
+                        setSelectedImage(null);
+                        setPredictions([]);
+                        // Add a small delay before starting the camera
+                        setTimeout(() => {
+                          startCamera();
+                        }, 100);
+                      }}
+                    >
+                      Retake Photo
+                    </button>
+                  </div>
+                  <button 
+                    className="classify-btn"
+                    onClick={classifyImage}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Classifying...' : 'Classify Image'}
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>
 
         <div className="content-section">
-          {selectedImage && (
-            <div className="image-preview">
-              <img src={selectedImage} alt="Preview" />
-            </div>
-          )}
-
-          {selectedImage && (
-            <button 
-              className="classify-btn"
-              onClick={classifyImage}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Classifying...' : 'Classify Image'}
-            </button>
+          {!useCamera && selectedImage && (
+            <>
+              <div className="image-preview">
+                <img src={selectedImage} alt="Preview" />
+              </div>
+              <button 
+                className="classify-btn"
+                onClick={classifyImage}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Classifying...' : 'Classify Image'}
+              </button>
+            </>
           )}
 
           {predictions.length > 0 && (
