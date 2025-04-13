@@ -161,15 +161,15 @@ function App() {
                   onClick={switchCamera}
                   aria-label="Switch Camera"
                 >
-                  <div className="switch-camera-icon"></div>
-                </button>
-                <button 
-                  className="capture-btn"
-                  onClick={capturePhoto}
-                >
-                  Take Photo
+                  <img src="/camera.png" alt="Switch camera" />
                 </button>
               </div>
+              <button 
+                className="capture-btn"
+                onClick={capturePhoto}
+              >
+                Take Photo
+              </button>
             </div>
           )}
         </div>
