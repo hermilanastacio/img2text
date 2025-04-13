@@ -161,7 +161,7 @@ function App() {
                   onClick={switchCamera}
                   aria-label="Switch Camera"
                 >
-                  <img src="/camera.png" alt="Switch camera" />
+                  <img src={require("./camera.png")} alt="Switch camera" />
                 </button>
               </div>
               <button 
